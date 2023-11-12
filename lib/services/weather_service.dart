@@ -27,8 +27,11 @@ class WetaherService {
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
     }
+
     Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+      desiredAccuracy: LocationAccuracy.high,
+      forceAndroidLocationManager: true,
+    );
 
     List<Placemark> placemark =
         await placemarkFromCoordinates(position.latitude, position.longitude);

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:weather/model/weather_model.dart';
 import 'package:weather/services/weather_service.dart';
 
@@ -27,10 +28,35 @@ class _WeatherPageState extends State<WeatherPage> {
     }
   }
 
+  String getWitherAnimation(String? mainCondition) {
+    if (mainCondition == null) {
+      return 'assetssun.json';
+    }
+    switch (mainCondition.toLowerCase()) {
+      case 'clouds':
+      case 'mist':
+      case 'smouke':
+      case 'haze':
+      case 'dust':
+      case 'fog':
+        return 'assets/could.json';
+      case 'rain':
+      case 'drizzle':
+      case 'shower rain':
+        return 'assets/rain.json';
+      case 'thunderstorm':
+        return 'assets/storm.json';
+      case 'clear':
+        return 'assets/sun.json';
+      default:
+        return 'assets/sun.json';
+    }
+  }
+
   @override
   void initState() {
-    super.initState();
     _feachWeather();
+    super.initState();
   }
 
   @override
@@ -40,8 +66,21 @@ class _WeatherPageState extends State<WeatherPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(_weather?.cityName ?? 'Загрузка погоды'),
-            Text('${_weather?.temperature.round()} C')
+            Text(
+              _weather?.cityName ?? 'Загрузка погоды',
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            Lottie.asset(getWitherAnimation(_weather?.mainCondition)),
+            Text(
+              '${_weather?.temperature.round()} °C',
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+              ),
+            )
           ],
         ),
       ),
